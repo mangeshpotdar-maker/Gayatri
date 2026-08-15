@@ -3,6 +3,7 @@ import { Playfair_Display, Inter } from 'next/font/google';
 import './globals.css';
 import { CartProvider } from '@/context/CartContext';
 import { WishlistProvider } from '@/context/WishlistContext';
+import BackgroundMusic from '@/components/BackgroundMusic';
 
 const playfair = Playfair_Display({
   subsets: ['latin'],
@@ -28,10 +29,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={`${playfair.variable} ${inter.variable}`}>
-      <body className="bg-stone-950 text-stone-100 antialiased font-sans selection:bg-amber-800 selection:text-amber-100">
+      <body className="bg-stone-50 text-stone-900 antialiased font-sans selection:bg-amber-800 selection:text-amber-100">
         <CartProvider>
           <WishlistProvider>
             {children}
+            <BackgroundMusic />
           </WishlistProvider>
         </CartProvider>
       </body>

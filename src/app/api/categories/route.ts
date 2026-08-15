@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { getAllCategories } from '@/lib/services';
 import { getDb } from '@/lib/db';
+import { isAdminAuthenticated } from '@/lib/auth';
 
 export async function GET(request: Request) {
   try {
@@ -15,6 +16,9 @@ export async function GET(request: Request) {
 
 export async function POST(request: Request) {
   try {
+    if (!(await isAdminAuthenticated())) {
+      return NextResponse.json({ error: 'Unauthorized admin access required' }, { status: 401 });
+    }
     const db = getDb();
     const body = await request.json();
     const { name, slug, description, image_url, display_order } = body;
@@ -39,6 +43,9 @@ export async function POST(request: Request) {
 
 export async function PUT(request: Request) {
   try {
+    if (!(await isAdminAuthenticated())) {
+      return NextResponse.json({ error: 'Unauthorized admin access required' }, { status: 401 });
+    }
     const db = getDb();
     const body = await request.json();
     const { id, name, slug, description, image_url, display_order, is_hidden } = body;
@@ -63,6 +70,9 @@ export async function PUT(request: Request) {
 
 export async function DELETE(request: Request) {
   try {
+    if (!(await isAdminAuthenticated())) {
+      return NextResponse.json({ error: 'Unauthorized admin access required' }, { status: 401 });
+    }
     const db = getDb();
     const { searchParams } = new URL(request.url);
     const id = searchParams.get('id');

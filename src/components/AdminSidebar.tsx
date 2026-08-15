@@ -14,6 +14,7 @@ import {
   Home,
   QrCode,
   Settings,
+  Activity,
   LogOut,
   ExternalLink
 } from 'lucide-react';
@@ -29,6 +30,7 @@ export default function AdminSidebar() {
 
   const links = [
     { name: 'Dashboard', href: '/admin/dashboard', icon: LayoutDashboard },
+    { name: 'Live Traffic Data', href: '/admin/traffic', icon: Activity },
     { name: 'Products', href: '/admin/products', icon: Package },
     { name: 'Categories', href: '/admin/categories', icon: Layers },
     { name: 'Orders', href: '/admin/orders', icon: ShoppingBag },

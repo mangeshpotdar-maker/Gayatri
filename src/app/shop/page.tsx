@@ -67,37 +67,37 @@ function ShopContent() {
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 space-y-8">
       {/* Page Header */}
-      <div className="border-b border-amber-900/30 pb-6 space-y-2">
-        <h1 className="font-serif text-3xl sm:text-4xl font-semibold text-amber-100">
+      <div className="border-b border-amber-200/80 pb-6 space-y-2">
+        <h1 className="font-serif text-3xl sm:text-4xl font-bold text-amber-950">
           Handmade Art Collection
         </h1>
-        <p className="text-xs sm:text-sm text-stone-400">
+        <p className="text-xs sm:text-sm text-stone-600">
           Discover original paintings, clay mirror panels, aromatherapy candles and resin art.
         </p>
       </div>
 
       {/* Top Controls Bar */}
-      <div className="flex flex-wrap items-center justify-between gap-4 bg-stone-900/80 p-4 rounded-xl border border-stone-800">
+      <div className="flex flex-wrap items-center justify-between gap-4 bg-white p-4 rounded-2xl border border-amber-200/80 shadow-xs">
         <div className="flex items-center gap-2">
           <button
             onClick={() => setIsMobileFilterOpen(!isMobileFilterOpen)}
-            className="lg:hidden flex items-center gap-1.5 bg-stone-800 hover:bg-stone-700 text-amber-200 px-3 py-2 rounded-lg text-xs font-medium"
+            className="lg:hidden flex items-center gap-1.5 bg-amber-100/80 hover:bg-amber-200 text-amber-950 px-3 py-2 rounded-lg text-xs font-bold"
           >
             <Filter className="w-4 h-4" /> Filters
           </button>
-          <span className="text-xs text-stone-400 font-mono">
+          <span className="text-xs text-stone-600 font-mono">
             Showing {products.length} Items
           </span>
         </div>
 
         <div className="flex items-center gap-4">
-          <div className="flex items-center gap-2 text-xs text-stone-300">
-            <SlidersHorizontal className="w-4 h-4 text-amber-400" />
-            <span>Sort By:</span>
+          <div className="flex items-center gap-2 text-xs text-stone-700">
+            <SlidersHorizontal className="w-4 h-4 text-amber-800" />
+            <span className="font-medium">Sort By:</span>
             <select
               value={sortBy}
               onChange={(e) => setSortBy(e.target.value)}
-              className="bg-stone-950 border border-stone-800 text-amber-200 px-3 py-1.5 rounded-lg focus:outline-none focus:border-amber-600 text-xs"
+              className="bg-stone-50 border border-amber-200 text-stone-900 px-3 py-1.5 rounded-lg focus:outline-none focus:border-amber-700 text-xs font-medium"
             >
               <option value="newest">Newest Arrivals</option>
               <option value="price_low">Price: Low to High</option>
@@ -113,13 +113,13 @@ function ShopContent() {
         <aside
           className={`${
             isMobileFilterOpen ? 'block' : 'hidden'
-          } lg:block bg-stone-900/90 border border-stone-800 p-6 rounded-xl space-y-6 sticky top-24`}
+          } lg:block bg-white border border-amber-200/80 p-6 rounded-2xl space-y-6 sticky top-24 shadow-xs`}
         >
-          <div className="flex items-center justify-between border-b border-stone-800 pb-3">
-            <h3 className="font-serif font-medium text-amber-200 text-base">Filter Collection</h3>
+          <div className="flex items-center justify-between border-b border-amber-200/80 pb-3">
+            <h3 className="font-serif font-bold text-amber-950 text-base">Filter Collection</h3>
             <button
               onClick={resetFilters}
-              className="text-[11px] text-amber-400 hover:underline flex items-center gap-1"
+              className="text-[11px] text-amber-800 hover:underline flex items-center gap-1 font-bold"
             >
               <RotateCcw className="w-3 h-3" /> Reset
             </button>
@@ -127,7 +127,7 @@ function ShopContent() {
 
           {/* Search Input */}
           <div className="space-y-2">
-            <label className="text-xs font-semibold uppercase tracking-wider text-amber-300/80">
+            <label className="text-xs font-bold uppercase tracking-wider text-amber-900">
               Search Item
             </label>
             <div className="relative">
@@ -136,22 +136,22 @@ function ShopContent() {
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder="Name, material, SKU..."
-                className="w-full bg-stone-950 text-amber-100 placeholder-stone-500 border border-stone-800 rounded-lg px-3 py-2 text-xs focus:outline-none focus:border-amber-600"
+                className="w-full bg-stone-50 text-stone-900 placeholder-stone-400 border border-amber-200 rounded-lg px-3 py-2 text-xs focus:outline-none focus:border-amber-700"
               />
-              <Search className="w-3.5 h-3.5 text-stone-500 absolute right-3 top-2.5" />
+              <Search className="w-3.5 h-3.5 text-stone-400 absolute right-3 top-2.5" />
             </div>
           </div>
 
           {/* Categories */}
           <div className="space-y-2">
-            <label className="text-xs font-semibold uppercase tracking-wider text-amber-300/80">
+            <label className="text-xs font-bold uppercase tracking-wider text-amber-900">
               Category
             </label>
-            <div className="space-y-1 text-xs">
+            <div className="space-y-1 text-xs font-medium">
               <button
                 onClick={() => setSelectedCategory('')}
                 className={`w-full text-left px-3 py-1.5 rounded transition ${
-                  selectedCategory === '' ? 'bg-amber-900/60 text-amber-200 font-bold' : 'text-stone-400 hover:text-stone-200'
+                  selectedCategory === '' ? 'bg-amber-100 text-amber-950 font-bold' : 'text-stone-600 hover:text-amber-900'
                 }`}
               >
                 All Categories
@@ -161,7 +161,7 @@ function ShopContent() {
                   key={cat.id}
                   onClick={() => setSelectedCategory(cat.slug)}
                   className={`w-full text-left px-3 py-1.5 rounded transition ${
-                    selectedCategory === cat.slug ? 'bg-amber-900/60 text-amber-200 font-bold' : 'text-stone-400 hover:text-stone-200'
+                    selectedCategory === cat.slug ? 'bg-amber-100 text-amber-950 font-bold' : 'text-stone-600 hover:text-amber-900'
                   }`}
                 >
                   {cat.name}
@@ -173,10 +173,10 @@ function ShopContent() {
           {/* Price Range */}
           <div className="space-y-2">
             <div className="flex justify-between items-center text-xs">
-              <label className="font-semibold uppercase tracking-wider text-amber-300/80">
+              <label className="font-bold uppercase tracking-wider text-amber-900">
                 Max Price
               </label>
-              <span className="font-mono text-amber-200">₹{priceMax.toLocaleString('en-IN')}</span>
+              <span className="font-mono text-amber-950 font-bold">₹{priceMax.toLocaleString('en-IN')}</span>
             </div>
             <input
               type="range"
@@ -185,18 +185,18 @@ function ShopContent() {
               step="250"
               value={priceMax}
               onChange={(e) => setPriceMax(Number(e.target.value))}
-              className="w-full accent-amber-600 bg-stone-950 cursor-pointer"
+              className="w-full accent-amber-800 bg-amber-100 cursor-pointer"
             />
           </div>
 
           {/* Checkboxes */}
-          <div className="space-y-2 pt-2 border-t border-stone-800 text-xs text-stone-300">
+          <div className="space-y-2 pt-2 border-t border-amber-200/80 text-xs text-stone-700 font-medium">
             <label className="flex items-center gap-2 cursor-pointer">
               <input
                 type="checkbox"
                 checked={filterFeatured}
                 onChange={(e) => setFilterFeatured(e.target.checked)}
-                className="accent-amber-600 rounded"
+                className="accent-amber-800 rounded"
               />
               <span>Featured Pieces</span>
             </label>
@@ -205,7 +205,7 @@ function ShopContent() {
                 type="checkbox"
                 checked={filterNew}
                 onChange={(e) => setFilterNew(e.target.checked)}
-                className="accent-amber-600 rounded"
+                className="accent-amber-800 rounded"
               />
               <span>New Arrivals</span>
             </label>
@@ -214,7 +214,7 @@ function ShopContent() {
                 type="checkbox"
                 checked={filterBestseller}
                 onChange={(e) => setFilterBestseller(e.target.checked)}
-                className="accent-amber-600 rounded"
+                className="accent-amber-800 rounded"
               />
               <span>Bestsellers</span>
             </label>
@@ -226,16 +226,16 @@ function ShopContent() {
           {loading ? (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 animate-pulse">
               {[...Array(6)].map((_, i) => (
-                <div key={i} className="bg-stone-900 rounded-xl h-72 border border-stone-800" />
+                <div key={i} className="bg-amber-100/40 rounded-2xl h-72 border border-amber-200" />
               ))}
             </div>
           ) : products.length === 0 ? (
-            <div className="bg-stone-900/40 border border-stone-800 rounded-xl p-12 text-center space-y-4">
-              <p className="font-serif text-xl text-amber-200">No matching handmade products found.</p>
-              <p className="text-xs text-stone-400">Try adjusting your filters or resetting the search term.</p>
+            <div className="bg-white border border-amber-200 rounded-2xl p-12 text-center space-y-4 shadow-xs">
+              <p className="font-serif text-xl text-amber-950">No matching handmade products found.</p>
+              <p className="text-xs text-stone-600">Try adjusting your filters or resetting the search term.</p>
               <button
                 onClick={resetFilters}
-                className="bg-amber-800 hover:bg-amber-700 text-amber-100 px-6 py-2 rounded-lg text-xs font-medium transition"
+                className="bg-amber-800 hover:bg-amber-700 text-amber-50 px-6 py-2 rounded-lg text-xs font-bold transition"
               >
                 Reset All Filters
               </button>
@@ -255,11 +255,11 @@ function ShopContent() {
 
 export default function ShopPage() {
   return (
-    <div className="min-h-screen bg-stone-950 text-stone-100 flex flex-col font-sans">
+    <div className="min-h-screen bg-stone-50 text-stone-900 flex flex-col font-sans">
       <Navbar />
       <CartDrawer />
       <main className="flex-1">
-        <Suspense fallback={<div className="p-12 text-center text-amber-200">Loading catalog...</div>}>
+        <Suspense fallback={<div className="p-12 text-center text-amber-900">Loading catalog...</div>}>
           <ShopContent />
         </Suspense>
       </main>

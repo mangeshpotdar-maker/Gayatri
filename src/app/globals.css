@@ -1,26 +1,36 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+@layer base {
+  body {
+    background-color: #fdfbf7; /* Warm silk parchment background */
+    color: #292524;
+    font-family: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+/* Indian Traditional Motif Pattern Accent */
+.indian-motif-bg {
+  background-color: #fcf7f0;
+  background-image: radial-gradient(#d97706 0.55px, transparent 0.55px), radial-gradient(#b45309 0.55px, #fcf7f0 0.55px);
+  background-size: 22px 22px;
+  background-position: 0 0, 11px 11px;
+}
+
+/* Paintbrush Underline Effect */
+.paintbrush-stroke {
+  position: relative;
+  display: inline-block;
+}
+
+.paintbrush-stroke::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -4px;
+  width: 100%;
+  height: 6px;
+  background: radial-gradient(ellipse at center, #d97706 0%, #b45309 70%, transparent 100%);
+  border-radius: 50% 20% 40% 60%;
+  opacity: 0.85;
+  transform: rotate(-1deg);
 }

@@ -27,20 +27,20 @@ export default function Footer() {
   const whatsappUrl = `https://wa.me/${settings.whatsapp_number}?text=${encodeURIComponent('Hello ' + settings.artist_name + '! I am contacting from your website.')}`;
 
   return (
-    <footer className="bg-stone-950 text-stone-300 border-t border-amber-900/40 font-sans">
+    <footer className="bg-amber-950 text-amber-100 border-t-4 border-amber-700 font-sans">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-16">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12">
           {/* Col 1: Store & Artist */}
           <div className="space-y-4">
-            <Link href="/" className="flex items-center gap-2">
-              <span className="w-8 h-8 rounded-full bg-amber-800 flex items-center justify-center text-amber-200 font-serif font-bold text-base">
+            <Link href="/" className="flex items-center gap-2.5">
+              <span className="w-8 h-8 rounded-full bg-amber-600 flex items-center justify-center text-amber-50 font-serif font-bold text-base">
                 K
               </span>
-              <span className="font-serif text-xl font-semibold text-amber-100 tracking-wide">
+              <span className="font-serif text-xl font-bold text-amber-100 tracking-wide">
                 {settings.store_name}
               </span>
             </Link>
-            <p className="text-xs text-stone-400 leading-relaxed">
+            <p className="text-xs text-amber-200/80 leading-relaxed font-light">
               Single-artisan boutique studio creating authentic handmade Lippan art, canvas paintings, scented soy candles, resin art and MDF home decor in Jaipur, Rajasthan.
             </p>
             <div className="pt-2">
@@ -48,17 +48,17 @@ export default function Footer() {
                 href={whatsappUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 bg-emerald-900/40 hover:bg-emerald-800/50 text-emerald-300 border border-emerald-700/50 px-4 py-2 rounded-lg text-xs font-medium transition"
+                className="inline-flex items-center gap-2 bg-emerald-900/80 hover:bg-emerald-800 text-emerald-200 border border-emerald-600/50 px-4 py-2 rounded-lg text-xs font-medium transition"
               >
-                <MessageCircle className="w-4 h-4 text-emerald-400" /> WhatsApp Studio Direct
+                <MessageCircle className="w-4 h-4 text-emerald-300" /> WhatsApp Studio Direct
               </a>
             </div>
           </div>
 
           {/* Col 2: Quick Links */}
           <div className="space-y-3">
-            <h4 className="font-serif font-semibold text-amber-200 text-sm tracking-wide">Shop Collection</h4>
-            <ul className="space-y-2 text-xs">
+            <h4 className="font-serif font-bold text-amber-300 text-sm tracking-wide">Shop Collection</h4>
+            <ul className="space-y-2 text-xs text-amber-200/90 font-light">
               <li>
                 <Link href="/category/canvas-paintings" className="hover:text-amber-400 transition">
                   Canvas Paintings
@@ -89,8 +89,8 @@ export default function Footer() {
 
           {/* Col 3: Customer Care & Policies */}
           <div className="space-y-3">
-            <h4 className="font-serif font-semibold text-amber-200 text-sm tracking-wide">Customer Care</h4>
-            <ul className="space-y-2 text-xs">
+            <h4 className="font-serif font-bold text-amber-300 text-sm tracking-wide">Customer Care</h4>
+            <ul className="space-y-2 text-xs text-amber-200/90 font-light">
               <li>
                 <Link href="/track-order" className="hover:text-amber-400 transition">
                   Track Order Status
@@ -121,22 +121,22 @@ export default function Footer() {
 
           {/* Col 4: Studio Contact */}
           <div className="space-y-3">
-            <h4 className="font-serif font-semibold text-amber-200 text-sm tracking-wide">Artisan Studio Contact</h4>
-            <ul className="space-y-2.5 text-xs text-stone-400">
+            <h4 className="font-serif font-bold text-amber-300 text-sm tracking-wide">Artisan Studio Contact</h4>
+            <ul className="space-y-2.5 text-xs text-amber-200/90 font-light">
               <li className="flex items-start gap-2">
-                <MapPin className="w-4 h-4 text-amber-500 shrink-0 mt-0.5" />
+                <MapPin className="w-4 h-4 text-amber-400 shrink-0 mt-0.5" />
                 <span>{settings.address}</span>
               </li>
               <li className="flex items-center gap-2">
-                <Phone className="w-4 h-4 text-amber-500 shrink-0" />
+                <Phone className="w-4 h-4 text-amber-400 shrink-0" />
                 <span>{settings.phone}</span>
               </li>
               <li className="flex items-center gap-2">
-                <Mail className="w-4 h-4 text-amber-500 shrink-0" />
+                <Mail className="w-4 h-4 text-amber-400 shrink-0" />
                 <span>{settings.email}</span>
               </li>
               <li className="flex items-center gap-2 pt-1">
-                <Share2 className="w-4 h-4 text-amber-500 shrink-0" />
+                <Share2 className="w-4 h-4 text-amber-400 shrink-0" />
                 <a
                   href={settings.instagram_url}
                   target="_blank"
@@ -151,10 +151,10 @@ export default function Footer() {
         </div>
 
         {/* Bottom Bar */}
-        <div className="mt-12 pt-6 border-t border-stone-800/80 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-stone-500">
+        <div className="mt-12 pt-6 border-t border-amber-900 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-amber-300/70 font-light">
           <p>© {new Date().getFullYear()} {settings.store_name}. All rights reserved.</p>
-          <p className="flex items-center gap-1 text-stone-400">
-            Handcrafted with <Heart className="w-3.5 h-3.5 text-red-500 fill-red-500" /> in Jaipur, India
+          <p className="flex items-center gap-1 text-amber-200">
+            Handcrafted with <Heart className="w-3.5 h-3.5 text-red-400 fill-red-400" /> in Jaipur, Rajasthan
           </p>
         </div>
       </div>

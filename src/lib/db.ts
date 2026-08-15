@@ -1,6 +1,5 @@
 import Database from 'better-sqlite3';
 import path from 'path';
-import fs from 'fs';
 
 const DB_PATH = process.env.DATABASE_FILE || path.join(process.cwd(), 'store.db');
 
@@ -47,12 +46,12 @@ function initTables(db: Database.Database) {
     CREATE TABLE IF NOT EXISTS homepage_sections (
       id INTEGER PRIMARY KEY CHECK (id = 1),
       hero_title TEXT DEFAULT 'Exquisite Handmade Art from Jaipur',
-      hero_subtitle TEXT DEFAULT 'Discover authentic Canvas Paintings, Lippan Art, Scented Candles, Resin Decor & MDF Crafts crafted with love.',
+      hero_subtitle TEXT DEFAULT 'Discover authentic Canvas Paintings, Lippan Art, Scented Candles, Resin Decor & MDF Crafts.',
       hero_cta_text TEXT DEFAULT 'Explore Collection',
       hero_cta_link TEXT DEFAULT '/shop',
       hero_image TEXT DEFAULT 'https://images.unsplash.com/photo-1579783902614-a3fb3927b675?auto=format&fit=crop&q=80&w=1200',
       why_handmade_title TEXT DEFAULT 'Why Choose Handmade Crafts?',
-      why_handmade_content TEXT DEFAULT 'Each piece is individually handcrafted with premium non-toxic materials. Owning handmade art means supporting authentic craftsmanship and receiving a unique treasure.',
+      why_handmade_content TEXT DEFAULT 'Each piece is individually handcrafted with premium non-toxic materials. Owning handmade art brings authentic cultural heritage and artistic soul into your living spaces.',
       updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
     );
 
@@ -212,6 +211,17 @@ function initTables(db: Database.Database) {
       entity_id TEXT NOT NULL,
       target_url TEXT NOT NULL,
       created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+    );
+
+    CREATE TABLE IF NOT EXISTS traffic_logs (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      path TEXT NOT NULL,
+      method TEXT NOT NULL,
+      ip TEXT,
+      user_agent TEXT,
+      response_time_ms REAL,
+      payload_bytes INTEGER DEFAULT 0,
+      timestamp DATETIME DEFAULT CURRENT_TIMESTAMP
     );
   `);
 }

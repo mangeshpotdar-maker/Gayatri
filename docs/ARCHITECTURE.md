@@ -3,7 +3,7 @@
 ## 1. System Overview
 This project is a complete production-quality, mobile-responsive single-owner e-commerce platform designed specifically for an Indian handmade artist/craft maker selling products across categories like Canvas Paintings, MDF Art, Lippan Art, Scented Wax Candles, and Resin Art.
 
-The system is built as a unified Next.js App Router application with a dual storefront (Customer-facing boutique UI) and back-office management system (Owner/Admin dashboard).
+The system is built as a unified Next.js App Router application with a dual storefront (Customer-facing boutique UI with light silk parchment aesthetic and paintbrush strokes) and back-office management system (Owner/Admin dashboard with live traffic data analytics).
 
 ---
 
@@ -13,7 +13,10 @@ The system is built as a unified Next.js App Router application with a dual stor
 |---|---|---|
 | **Frontend Framework** | Next.js 15 (React 19) + TypeScript | Open Source |
 | **Styling** | Tailwind CSS v4 + Lucide Icons | Open Source |
+| **Theme System** | Warm Light Silk Parchment, Jaipur Terracotta & Brass Accents | Open Source |
+| **Festival Automation** | Dynamic Indian Calendar Greeting Banner (`FestivalBanner.tsx`) | Automatically detects 15th Aug, Oct 2, Nov 14, Jan 26 & Indian festivals |
 | **Database & ORM** | SQLite (via `better-sqlite3`) / PostgreSQL-compatible schema | Local / Self-hosted / Supabase Free Tier compatible |
+| **Live Analytics Engine**| Traffic Logs Table & `/api/traffic` endpoint | Real-time HTTP request, latency & bandwidth tracking |
 | **Authentication** | Custom JWT + HTTP-only cookies / Auth helper | Zero monthly cost |
 | **Payment Gateway** | Razorpay (Test/Live mode integration with UPI QR) | Free setup, standard transaction fees apply (~2% per transaction) |
 | **QR Code Engine** | `qrcode` node package | 100% Free / Open Source |
@@ -36,59 +39,4 @@ The system is built as a unified Next.js App Router application with a dual stor
 10. `reviews`: ID, product_id, customer_name, customer_email, rating, comment, is_approved, created_at.
 11. `wishlists`: ID, user_id, session_id, product_id.
 12. `qr_codes`: ID, entity_type (product/store/order), entity_id, target_url, qr_svg.
-
----
-
-## 4. User Flows & Workflows
-
-### A. Customer Flow
-```
-Homepage -> Category Catalog -> Filter/Sort -> Product Detail -> Add to Cart -> Cart View
-   -> Guest or Account Checkout -> Enter Address -> Apply Coupon -> Payment Selection (UPI/QR/Cards)
-   -> Server Payment Verification -> Order Confirmation -> Order Status Tracking
-```
-
-### B. Payment Workflow (Razorpay Sandbox/Live with Server-side Verification)
-```
-Checkout -> Create Order API (`/api/checkout/create-order`)
-   -> Generate Razorpay Order & Signatures
-   -> Customer Scans UPI QR or pays via Razorpay Gateway
-   -> Webhook / Verification Endpoint (`/api/checkout/verify`) validates HMAC Signature
-   -> Verify Amount & Coupon
-   -> Atomic Stock Deduction -> Mark Order "Payment Confirmed" -> Order Receipt
-```
-
-### C. Owner/Admin Workflow
-```
-/admin/login -> Dashboard Summary (Sales metrics, Stock alerts)
-   ├── Products Admin (Add, Edit, Price change, Image upload, QR generation)
-   ├── Categories Admin (Create, Reorder, Hide/Show)
-   ├── Orders Admin (Status updates: Pending -> Processing -> Shipped -> Delivered)
-   ├── Coupons & Discounts Admin (Rule creation & expiry)
-   ├── Customer Reviews Moderation
-   └── Store Settings (Razorpay Keys, Shipping rates, WhatsApp details, Hero banner text)
-```
-
----
-
-## 5. Page Map
-
-- `/` - Homepage
-- `/shop` - Product listing with search & filters
-- `/category/[slug]` - Category page
-- `/product/[slug]` - Product details with QR modal & reviews
-- `/cart` - Shopping cart
-- `/checkout` - Checkout page (Guest or logged in)
-- `/order-confirmation/[id]` - Order confirmation & tracking
-- `/wishlist` - Saved items
-- `/admin/login` - Admin authentication
-- `/admin/dashboard` - Sales summary
-- `/admin/products` - Product management
-- `/admin/categories` - Category management
-- `/admin/orders` - Order management & status updates
-- `/admin/coupons` - Coupon & Discount engine
-- `/admin/inventory` - Low stock monitoring & adjustments
-- `/admin/reviews` - Review approvals
-- `/admin/homepage` - CMS for homepage content
-- `/admin/qr` - Store & Product QR Code Generator
-- `/admin/settings` - Store configuration
+13. `traffic_logs`: ID, path, method, ip, user_agent, response_time_ms, payload_bytes, timestamp.

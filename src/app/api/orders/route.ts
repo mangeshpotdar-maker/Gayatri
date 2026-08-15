@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { getDb } from '@/lib/db';
+import { isAdminAuthenticated } from '@/lib/auth';
 
 export async function GET(request: Request) {
   try {
@@ -8,6 +9,7 @@ export async function GET(request: Request) {
     const id = searchParams.get('id');
     const email = searchParams.get('email');
 
+    // Customer tracking / order confirmation lookup
     if (id) {
       const order = db.prepare('SELECT * FROM orders WHERE id = ? OR order_number = ?').get(id, id) as any;
       if (!order) {
@@ -22,7 +24,12 @@ export async function GET(request: Request) {
       return NextResponse.json({ orders });
     }
 
-    // Admin list all orders
+    // Admin listing all orders requires authentication
+    const isAuth = await isAdminAuthenticated();
+    if (!isAuth) {
+      return NextResponse.json({ error: 'Unauthorized admin access required to view customer order history' }, { status: 401 });
+    }
+
     const orders = db.prepare('SELECT * FROM orders ORDER BY created_at DESC').all();
     return NextResponse.json({ orders });
   } catch (error: any) {
@@ -32,6 +39,11 @@ export async function GET(request: Request) {
 
 export async function PUT(request: Request) {
   try {
+    const isAuth = await isAdminAuthenticated();
+    if (!isAuth) {
+      return NextResponse.json({ error: 'Unauthorized admin access required' }, { status: 401 });
+    }
+
     const db = getDb();
     const body = await request.json();
     const { order_id, status, payment_status, notes } = body;

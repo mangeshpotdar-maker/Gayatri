@@ -1,6 +1,9 @@
 import { NextResponse } from 'next/server';
 import { getDb } from '@/lib/db';
 import bcrypt from 'bcryptjs';
+import jwt from 'jsonwebtoken';
+
+const JWT_SECRET = process.env.JWT_SECRET || 'kalakriti_arts_secret_key_2025';
 
 export async function POST(request: Request) {
   try {
@@ -22,7 +25,7 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'Invalid admin credentials' }, { status: 401 });
     }
 
-    const token = `admin_session_${Date.now()}_${admin.id}`;
+    const token = jwt.sign({ id: admin.id, email: admin.email, role: 'admin' }, JWT_SECRET, { expiresIn: '7d' });
 
     const response = NextResponse.json({
       success: true,

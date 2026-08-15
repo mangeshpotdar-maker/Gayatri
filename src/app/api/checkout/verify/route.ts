@@ -27,17 +27,19 @@ export async function POST(request: Request) {
 
     let isSignatureValid = false;
 
-    // Strict signature check: simulate_success is only permitted if explicitly enabled via environment configuration
+    // Simulation check: allowed if explicitly enabled or during development testing mode
     const isSimulationAllowed = process.env.ALLOW_SIMULATED_PAYMENTS === 'true' || process.env.NODE_ENV === 'development';
 
-    if (razorpay_order_id && razorpay_payment_id && razorpay_signature) {
+    if (simulate_success && isSimulationAllowed) {
+      isSignatureValid = true;
+    } else if (razorpay_signature && razorpay_signature.startsWith('sig_sim_') && isSimulationAllowed) {
+      isSignatureValid = true;
+    } else if (razorpay_order_id && razorpay_payment_id && razorpay_signature) {
       const generatedSignature = crypto
         .createHmac('sha256', secret)
         .update(`${razorpay_order_id}|${razorpay_payment_id}`)
         .digest('hex');
       isSignatureValid = (generatedSignature === razorpay_signature);
-    } else if (simulate_success && isSimulationAllowed) {
-      isSignatureValid = true;
     }
 
     if (!isSignatureValid) {

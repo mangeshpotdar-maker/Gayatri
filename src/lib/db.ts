@@ -1,7 +1,24 @@
 import Database from 'better-sqlite3';
 import path from 'path';
+import fs from 'fs';
 
-const DB_PATH = process.env.DATABASE_FILE || path.join(process.cwd(), 'store.db');
+const PRIMARY_BASE_DIR = 'C:\\Mangesh\\Jules\\GayatriPortal';
+
+function resolveDbPath(): string {
+  if (process.env.DATABASE_FILE) {
+    return process.env.DATABASE_FILE;
+  }
+  try {
+    if (!fs.existsSync(PRIMARY_BASE_DIR)) {
+      fs.mkdirSync(PRIMARY_BASE_DIR, { recursive: true });
+    }
+    return path.join(PRIMARY_BASE_DIR, 'store.db');
+  } catch (e) {
+    return path.join(process.cwd(), 'store.db');
+  }
+}
+
+const DB_PATH = resolveDbPath();
 
 let dbInstance: Database.Database | null = null;
 

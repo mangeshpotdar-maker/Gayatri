@@ -2,20 +2,23 @@ import Database from 'better-sqlite3';
 import path from 'path';
 import fs from 'fs';
 
-const PRIMARY_BASE_DIR = 'C:\\Mangesh\\Jules\\GayatriPortal';
-
 function resolveDbPath(): string {
   if (process.env.DATABASE_FILE) {
     return process.env.DATABASE_FILE;
   }
+  // Cross-platform fallback: C:\Mangesh\Jules\GayatriPortal on Windows if accessible, or process.cwd()/store.db
+  const defaultWindowsPath = 'C:\\Mangesh\\Jules\\GayatriPortal';
   try {
-    if (!fs.existsSync(PRIMARY_BASE_DIR)) {
-      fs.mkdirSync(PRIMARY_BASE_DIR, { recursive: true });
+    if (process.platform === 'win32') {
+      if (!fs.existsSync(defaultWindowsPath)) {
+        fs.mkdirSync(defaultWindowsPath, { recursive: true });
+      }
+      return path.join(defaultWindowsPath, 'store.db');
     }
-    return path.join(PRIMARY_BASE_DIR, 'store.db');
   } catch (e) {
-    return path.join(process.cwd(), 'store.db');
+    // Fall back to process.cwd()
   }
+  return path.join(process.cwd(), 'store.db');
 }
 
 const DB_PATH = resolveDbPath();

@@ -7,6 +7,27 @@
 
 const readline = require('readline');
 const { execSync } = require('child_process');
+const fs = require('fs');
+const path = require('path');
+
+const LOG_FILE = path.join(process.cwd(), 'install.log');
+const ERROR_LOG = path.join(process.cwd(), 'error.log');
+
+function writeLog(msg, isError = false) {
+  const timestamp = new Date().toISOString();
+  const entry = `[${timestamp}] [SETUP] ${msg}\n`;
+  try {
+    fs.appendFileSync(LOG_FILE, entry, 'utf8');
+    if (isError) {
+      fs.appendFileSync(ERROR_LOG, entry, 'utf8');
+    }
+  } catch (e) {
+    // Fallback if log writing fails
+  }
+}
+
+// Log start of installation process
+writeLog("Starting Kalakriti Arts Studio Setup Wizard execution...");
 
 const rl = readline.createInterface({
   input: process.stdin,
@@ -29,6 +50,7 @@ function printHeader(title = "KALAKRITI ARTS STUDIO SETUP WIZARD") {
 
 async function welcomeStep() {
   clearScreen();
+  writeLog("Entered Welcome Step");
   printHeader("WELCOME TO KALAKRITI ARTS STUDIO SETUP");
   console.log("  Welcome to the Kalakriti Arts Studio Installation Program.");
   console.log("  This setup program will install Kalakriti Arts Studio E-Commerce Boutique");
@@ -40,6 +62,7 @@ async function welcomeStep() {
   return new Promise((resolve) => {
     rl.question("  [Enter = Next / Q = Cancel]: ", (answer) => {
       if (answer.toLowerCase() === 'q') {
+        writeLog("Setup cancelled by user at Welcome Step");
         console.log("\n  Setup cancelled by user.");
         process.exit(0);
       }
@@ -50,6 +73,7 @@ async function welcomeStep() {
 
 async function licenseStep() {
   clearScreen();
+  writeLog("Entered License Step");
   printHeader("SOFTWARE LICENSE AGREEMENT");
   console.log("  Please read the following License Agreement carefully:\n");
   console.log("  --------------------------------------------------------------------------");
@@ -64,9 +88,11 @@ async function licenseStep() {
   return new Promise((resolve) => {
     rl.question("  Do you accept all the terms of the preceding License Agreement? [Y/N]: ", (answer) => {
       if (answer.toLowerCase() !== 'y') {
+        writeLog("License Agreement declined by user");
         console.log("\n  You must accept the agreement to install setup. Exiting...");
         process.exit(0);
       }
+      writeLog("License Agreement accepted by user");
       resolve();
     });
   });
@@ -74,6 +100,7 @@ async function licenseStep() {
 
 async function destinationStep() {
   clearScreen();
+  writeLog("Entered Destination Step");
   printHeader("CHOOSE DESTINATION LOCATION");
   console.log("  Setup will install Kalakriti Arts Studio in the following directory:\n");
   console.log("      C:\\Mangesh\\Jules\\GayatriPortal\\");
@@ -81,6 +108,7 @@ async function destinationStep() {
 
   return new Promise((resolve) => {
     rl.question("  Press [ENTER] to accept this directory and begin installation: ", () => {
+      writeLog("Destination folder C:\\Mangesh\\Jules\\GayatriPortal\\ confirmed");
       resolve();
     });
   });
@@ -108,6 +136,8 @@ async function installProgressStep() {
     const filledBar = "█".repeat(Math.floor(percent / 5));
     const emptyBar = "░".repeat(20 - Math.floor(percent / 5));
 
+    writeLog(`Task [${i + 1}/${tasks.length}]: ${tasks[i]}`);
+
     clearScreen();
     printHeader("INSTALLATION IN PROGRESS...");
     console.log(`  Current Action: ${tasks[i]}`);
@@ -117,15 +147,19 @@ async function installProgressStep() {
     if (i === 2 || i === 3 || i === 4) {
       try {
         execSync('node -e "require(\'./src/lib/seed.ts\')"', { stdio: 'ignore' });
-      } catch (e) {}
+        writeLog(`Successfully executed database seed routine for task: ${tasks[i]}`);
+      } catch (e) {
+        writeLog(`Error executing seed routine: ${e.message}`, true);
+      }
     }
 
-    await sleep(400);
+    await sleep(300);
   }
 }
 
 async function finishStep() {
   clearScreen();
+  writeLog("Installation completed successfully!");
   printHeader("SETUP COMPLETE!");
   console.log("  Congratulations!");
   console.log("  Kalakriti Arts Studio has been successfully installed on your computer.\n");
@@ -134,6 +168,8 @@ async function finishStep() {
   console.log("  * Admin Dashboard:     http://localhost:3000/admin");
   console.log("  * Setup Wizard Page:   http://localhost:3000/setup");
   console.log("  * Admin Login:         admin@kalakritiarts.in / admin123");
+  console.log("  * Install Log:         install.log");
+  console.log("  * Error Log:           error.log");
   console.log("  --------------------------------------------------------------------------\n");
   console.log("  To launch the store server, run:\n");
   console.log("      npm run dev   (or npm start for production mode)\n");
@@ -144,11 +180,17 @@ async function finishStep() {
 }
 
 async function runWizard() {
-  await welcomeStep();
-  await licenseStep();
-  await destinationStep();
-  await installProgressStep();
-  await finishStep();
+  try {
+    await welcomeStep();
+    await licenseStep();
+    await destinationStep();
+    await installProgressStep();
+    await finishStep();
+  } catch (err) {
+    writeLog(`Unhandled error during setup wizard execution: ${err.stack || err.message}`, true);
+    console.error("\n[ERROR] Setup encountered an error. Check error.log for details.");
+    rl.close();
+  }
 }
 
 runWizard();

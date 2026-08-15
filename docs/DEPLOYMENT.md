@@ -1,6 +1,10 @@
 # KalaKriti Arts Studio — Deployment Guide
 
-## 1. Overview
+## 1. Primary Base Directory
+All source code, database files, and related assets are configured to be stored under the primary installation directory:
+`C:\Mangesh\Jules\GayatriPortal`
+
+## 2. Overview
 This application is built using Next.js 15, TypeScript, Tailwind CSS, and SQLite (`better-sqlite3`) / PostgreSQL-compatible architecture.
 
 ---

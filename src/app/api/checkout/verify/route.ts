@@ -23,19 +23,21 @@ export async function POST(request: Request) {
     }
 
     const settings = db.prepare('SELECT razorpay_key_secret FROM store_settings WHERE id = 1').get() as { razorpay_key_secret: string };
-    const secret = settings ? settings.razorpay_key_secret : 'sampleSecretKey456';
+    const secret = settings ? settings.razorpay_key_secret : (process.env.RAZORPAY_KEY_SECRET || 'sampleSecretKey456');
 
     let isSignatureValid = false;
 
-    // Direct simulation mode for sandbox testing or real HMAC verification
-    if (simulate_success || process.env.NODE_ENV !== 'production') {
-      isSignatureValid = true;
-    } else if (razorpay_order_id && razorpay_payment_id && razorpay_signature) {
+    // Strict signature check: simulate_success is only permitted if explicitly enabled via environment configuration
+    const isSimulationAllowed = process.env.ALLOW_SIMULATED_PAYMENTS === 'true' || process.env.NODE_ENV === 'development';
+
+    if (razorpay_order_id && razorpay_payment_id && razorpay_signature) {
       const generatedSignature = crypto
         .createHmac('sha256', secret)
         .update(`${razorpay_order_id}|${razorpay_payment_id}`)
         .digest('hex');
-      isSignatureValid = generatedSignature === razorpay_signature;
+      isSignatureValid = (generatedSignature === razorpay_signature);
+    } else if (simulate_success && isSimulationAllowed) {
+      isSignatureValid = true;
     }
 
     if (!isSignatureValid) {

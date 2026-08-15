@@ -7,9 +7,8 @@ export async function GET(request: Request) {
     const db = getDb();
     const { searchParams } = new URL(request.url);
     const id = searchParams.get('id');
-    const email = searchParams.get('email');
 
-    // Customer tracking / order confirmation lookup
+    // Customer tracking / order confirmation lookup by order ID or Order Number
     if (id) {
       const order = db.prepare('SELECT * FROM orders WHERE id = ? OR order_number = ?').get(id, id) as any;
       if (!order) {
@@ -19,15 +18,16 @@ export async function GET(request: Request) {
       return NextResponse.json({ order, items });
     }
 
-    if (email) {
-      const orders = db.prepare('SELECT * FROM orders WHERE customer_email = ? ORDER BY created_at DESC').all(email.trim());
-      return NextResponse.json({ orders });
-    }
-
-    // Admin listing all orders requires authentication
+    // Viewing customer order lists or overall history requires admin authorization
     const isAuth = await isAdminAuthenticated();
     if (!isAuth) {
       return NextResponse.json({ error: 'Unauthorized admin access required to view customer order history' }, { status: 401 });
+    }
+
+    const email = searchParams.get('email');
+    if (email) {
+      const orders = db.prepare('SELECT * FROM orders WHERE customer_email = ? ORDER BY created_at DESC').all(email.trim());
+      return NextResponse.json({ orders });
     }
 
     const orders = db.prepare('SELECT * FROM orders ORDER BY created_at DESC').all();

@@ -67,7 +67,7 @@ export default function HomePage() {
             </div>
 
             <h1 className="font-serif text-4xl sm:text-6xl lg:text-7xl font-bold text-amber-100 tracking-tight leading-tight">
-              <span className="paintbrush-stroke">{homepage?.hero_title || 'Exquisite Handmade Art'}</span>
+              <span className="paintbrush-stroke">{homepage?.hero_title || 'Exquisite Handmade Art from Jaipur'}</span>
             </h1>
 
             <p className="text-base sm:text-xl text-amber-200/90 max-w-2xl mx-auto font-light leading-relaxed">
@@ -175,8 +175,8 @@ export default function HomePage() {
                   <div className="flex items-center gap-3">
                     <Award className="w-8 h-8 text-amber-700" />
                     <div>
-                      <p className="text-xs font-bold text-amber-950">100% Authentic Handcraft</p>
-                      <p className="text-[10px] text-stone-600">Jaipur, Rajasthan Studio</p>
+                      <p className="text-xs font-bold text-amber-950">{settings?.studio_badge || '100% Authentic Handcraft'}</p>
+                      <p className="text-[10px] text-stone-600">{settings?.studio_location || 'Jaipur, Rajasthan Studio'}</p>
                     </div>
                   </div>
                 </div>

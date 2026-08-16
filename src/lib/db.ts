@@ -39,18 +39,20 @@ function initTables(db: Database.Database) {
   db.exec(`
     CREATE TABLE IF NOT EXISTS store_settings (
       id INTEGER PRIMARY KEY CHECK (id = 1),
-      store_name TEXT NOT NULL DEFAULT 'KalaKriti Arts Studio',
-      artist_name TEXT NOT NULL DEFAULT 'Ananya Sharma',
+      store_name TEXT NOT NULL DEFAULT 'Gayatris Creations',
+      artist_name TEXT NOT NULL DEFAULT 'Gayatri Potdar',
       tagline TEXT DEFAULT 'Handmade Indian Heritage & Contemporary Crafts',
-      bio TEXT DEFAULT 'Ananya Sharma is an accomplished artisan from Rajasthan who combines traditional Indian craftsmanship like Lippan Kaam with contemporary resin and canvas art.',
+      studio_location TEXT DEFAULT 'Pune, Maharashtra Studio',
+      studio_badge TEXT DEFAULT '100% Authentic Handcraft',
+      bio TEXT DEFAULT 'Gayatri Potdar is an artisan based in Pune, India. She merges centuries-old heritage crafts like Lippan Kaam with modern resin art and textured canvas paintings.',
       craft_philosophy TEXT DEFAULT 'Every creation carries a piece of soul, passion, and centuries of artistic tradition transformed into modern home decor.',
       artist_photo TEXT DEFAULT 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&q=80&w=800',
       logo TEXT DEFAULT '/logo.png',
-      email TEXT DEFAULT 'artist@kalakritiarts.in',
-      phone TEXT DEFAULT '+91 98765 43210',
-      whatsapp_number TEXT DEFAULT '919876543210',
-      address TEXT DEFAULT 'Studio 12, Craft Village, Jaipur, Rajasthan 302001',
-      instagram_url TEXT DEFAULT 'https://instagram.com/kalakriti_arts',
+      email TEXT DEFAULT 'soniyapandit@gmail.com',
+      phone TEXT DEFAULT '+91 92847 24914',
+      whatsapp_number TEXT DEFAULT '9284724914',
+      address TEXT DEFAULT 'Pune, Maharashtra 411001',
+      instagram_url TEXT DEFAULT 'https://instagram.com/gayatris_creations',
       currency_symbol TEXT DEFAULT '₹',
       flat_shipping_rate REAL DEFAULT 100.0,
       free_shipping_threshold REAL DEFAULT 1999.0,
@@ -65,7 +67,7 @@ function initTables(db: Database.Database) {
 
     CREATE TABLE IF NOT EXISTS homepage_sections (
       id INTEGER PRIMARY KEY CHECK (id = 1),
-      hero_title TEXT DEFAULT 'Exquisite Handmade Art from Jaipur',
+      hero_title TEXT DEFAULT 'Exquisite Handmade Art from Pune',
       hero_subtitle TEXT DEFAULT 'Discover authentic Canvas Paintings, Lippan Art, Scented Candles, Resin Decor & MDF Crafts.',
       hero_cta_text TEXT DEFAULT 'Explore Collection',
       hero_cta_link TEXT DEFAULT '/shop',
@@ -221,7 +223,7 @@ function initTables(db: Database.Database) {
       id TEXT PRIMARY KEY,
       email TEXT NOT NULL UNIQUE,
       password_hash TEXT NOT NULL,
-      name TEXT DEFAULT 'Store Owner',
+      name TEXT DEFAULT 'Gayatri Potdar',
       created_at DATETIME DEFAULT CURRENT_TIMESTAMP
     );
 
@@ -244,4 +246,12 @@ function initTables(db: Database.Database) {
       timestamp DATETIME DEFAULT CURRENT_TIMESTAMP
     );
   `);
+
+  // Migration additions
+  try {
+    db.exec(`ALTER TABLE store_settings ADD COLUMN studio_location TEXT DEFAULT 'Pune, Maharashtra Studio'`);
+  } catch (e) {}
+  try {
+    db.exec(`ALTER TABLE store_settings ADD COLUMN studio_badge TEXT DEFAULT '100% Authentic Handcraft'`);
+  } catch (e) {}
 }

@@ -7,8 +7,10 @@ import { QrCode, Download, ExternalLink, Printer } from 'lucide-react';
 export default function AdminQRCenterPage() {
   const [products, setProducts] = useState<any[]>([]);
   const [selectedProductSlug, setSelectedProductSlug] = useState('');
-  const [qrType, setQrType] = useState<'store' | 'product'>('store');
+  const [qrType, setQrType] = useState<'store' | 'product' | 'payment'>('store');
   const [storeUrl, setStoreUrl] = useState('http://localhost:3000');
+  const [paymentUpi, setPaymentUpi] = useState('9284724914@okbizaxis');
+  const [paymentAmount, setPaymentAmount] = useState('1000');
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -27,7 +29,9 @@ export default function AdminQRCenterPage() {
 
   const targetUrl = qrType === 'store'
     ? storeUrl
-    : `${storeUrl}/product/${selectedProductSlug}`;
+    : qrType === 'product'
+    ? `${storeUrl}/product/${selectedProductSlug}`
+    : `upi://pay?pa=${encodeURIComponent(paymentUpi)}&pn=Gayatris%20Creations&am=${paymentAmount}&cu=INR`;
 
   const qrImageUrl = `/api/qr?url=${encodeURIComponent(targetUrl)}`;
 
@@ -49,25 +53,56 @@ export default function AdminQRCenterPage() {
             <div className="space-y-4">
               <div>
                 <label className="block text-stone-400 mb-2 font-semibold">QR Type</label>
-                <div className="grid grid-cols-2 gap-3">
+                <div className="grid grid-cols-3 gap-2">
                   <button
                     onClick={() => setQrType('store')}
-                    className={`py-3 rounded-xl font-bold transition border ${
+                    className={`py-3 rounded-xl font-bold transition border text-[11px] ${
                       qrType === 'store' ? 'bg-amber-800 text-amber-100 border-amber-600' : 'bg-stone-950 border-stone-800 text-stone-400'
                     }`}
                   >
-                    Store Homepage QR
+                    Store Homepage
                   </button>
                   <button
                     onClick={() => setQrType('product')}
-                    className={`py-3 rounded-xl font-bold transition border ${
+                    className={`py-3 rounded-xl font-bold transition border text-[11px] ${
                       qrType === 'product' ? 'bg-amber-800 text-amber-100 border-amber-600' : 'bg-stone-950 border-stone-800 text-stone-400'
                     }`}
                   >
-                    Product Specific QR
+                    Artwork Page
+                  </button>
+                  <button
+                    onClick={() => setQrType('payment')}
+                    className={`py-3 rounded-xl font-bold transition border text-[11px] ${
+                      qrType === 'payment' ? 'bg-amber-800 text-amber-100 border-amber-600' : 'bg-stone-950 border-stone-800 text-stone-400'
+                    }`}
+                  >
+                    GPay Payment QR
                   </button>
                 </div>
               </div>
+
+              {qrType === 'payment' && (
+                <div className="space-y-3 bg-stone-950 border border-stone-800 p-3 rounded-xl">
+                  <div>
+                    <label className="block text-stone-400 mb-1">GPay UPI VPA</label>
+                    <input
+                      type="text"
+                      value={paymentUpi}
+                      onChange={(e) => setPaymentUpi(e.target.value)}
+                      className="w-full bg-stone-900 border border-stone-800 text-emerald-400 font-bold rounded-lg p-2 font-mono"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-stone-400 mb-1">Preset Amount (₹ Optional)</label>
+                    <input
+                      type="number"
+                      value={paymentAmount}
+                      onChange={(e) => setPaymentAmount(e.target.value)}
+                      className="w-full bg-stone-900 border border-stone-800 text-amber-200 font-bold rounded-lg p-2 font-mono"
+                    />
+                  </div>
+                </div>
+              )}
 
               {qrType === 'product' && (
                 <div>

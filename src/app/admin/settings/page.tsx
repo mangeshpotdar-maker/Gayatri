@@ -9,6 +9,8 @@ export default function AdminSettingsPage() {
     store_name: '',
     artist_name: '',
     tagline: '',
+    studio_badge: '',
+    studio_location: '',
     bio: '',
     craft_philosophy: '',
     artist_photo: '',
@@ -25,7 +27,9 @@ export default function AdminSettingsPage() {
     tax_inclusive: true,
     razorpay_key_id: '',
     razorpay_key_secret: '',
-    razorpay_webhook_secret: ''
+    razorpay_webhook_secret: '',
+    payment_upi_id: '9284724914@okbizaxis',
+    payment_upi_mobile: '9284724914'
   });
   const [savedMsg, setSavedMsg] = useState('');
 
@@ -73,7 +77,7 @@ export default function AdminSettingsPage() {
               <label className="block text-stone-400 mb-1">Store / Studio Name</label>
               <input
                 type="text"
-                value={settings.store_name}
+                value={settings.store_name || ''}
                 onChange={(e) => setSettings({ ...settings, store_name: e.target.value })}
                 className="w-full bg-stone-950 border border-stone-800 rounded-lg px-3 py-2 text-amber-100"
               />
@@ -83,9 +87,31 @@ export default function AdminSettingsPage() {
               <label className="block text-stone-400 mb-1">Artist / Maker Name</label>
               <input
                 type="text"
-                value={settings.artist_name}
+                value={settings.artist_name || ''}
                 onChange={(e) => setSettings({ ...settings, artist_name: e.target.value })}
                 className="w-full bg-stone-950 border border-stone-800 rounded-lg px-3 py-2 text-amber-100"
+              />
+            </div>
+
+            <div>
+              <label className="block text-stone-400 mb-1">Studio Badge Title</label>
+              <input
+                type="text"
+                value={settings.studio_badge || ''}
+                onChange={(e) => setSettings({ ...settings, studio_badge: e.target.value })}
+                placeholder="e.g. 100% Authentic Handcraft"
+                className="w-full bg-stone-950 border border-stone-800 rounded-lg px-3 py-2 text-amber-200 font-bold"
+              />
+            </div>
+
+            <div>
+              <label className="block text-stone-400 mb-1">Studio Location Subtitle</label>
+              <input
+                type="text"
+                value={settings.studio_location || ''}
+                onChange={(e) => setSettings({ ...settings, studio_location: e.target.value })}
+                placeholder="e.g. Jaipur, Rajasthan Studio"
+                className="w-full bg-stone-950 border border-stone-800 rounded-lg px-3 py-2 text-amber-200 font-bold"
               />
             </div>
 
@@ -93,7 +119,7 @@ export default function AdminSettingsPage() {
               <label className="block text-stone-400 mb-1">Artist Biography / Story</label>
               <textarea
                 rows={3}
-                value={settings.bio}
+                value={settings.bio || ''}
                 onChange={(e) => setSettings({ ...settings, bio: e.target.value })}
                 className="w-full bg-stone-950 border border-stone-800 rounded-lg px-3 py-2 text-stone-200"
               />
@@ -103,7 +129,7 @@ export default function AdminSettingsPage() {
               <label className="block text-stone-400 mb-1">Craft Philosophy</label>
               <input
                 type="text"
-                value={settings.craft_philosophy}
+                value={settings.craft_philosophy || ''}
                 onChange={(e) => setSettings({ ...settings, craft_philosophy: e.target.value })}
                 className="w-full bg-stone-950 border border-stone-800 rounded-lg px-3 py-2 text-stone-200"
               />
@@ -113,7 +139,7 @@ export default function AdminSettingsPage() {
               <label className="block text-stone-400 mb-1">Artist Photo URL</label>
               <input
                 type="text"
-                value={settings.artist_photo}
+                value={settings.artist_photo || ''}
                 onChange={(e) => setSettings({ ...settings, artist_photo: e.target.value })}
                 className="w-full bg-stone-950 border border-stone-800 rounded-lg px-3 py-2 font-mono text-stone-300"
               />
@@ -127,7 +153,7 @@ export default function AdminSettingsPage() {
               <label className="block text-stone-400 mb-1">WhatsApp Mobile Number (e.g. 919876543210)</label>
               <input
                 type="text"
-                value={settings.whatsapp_number}
+                value={settings.whatsapp_number || ''}
                 onChange={(e) => setSettings({ ...settings, whatsapp_number: e.target.value })}
                 className="w-full bg-stone-950 border border-stone-800 rounded-lg px-3 py-2 font-mono text-emerald-400 font-bold"
               />
@@ -137,7 +163,7 @@ export default function AdminSettingsPage() {
               <label className="block text-stone-400 mb-1">Studio Email</label>
               <input
                 type="email"
-                value={settings.email}
+                value={settings.email || ''}
                 onChange={(e) => setSettings({ ...settings, email: e.target.value })}
                 className="w-full bg-stone-950 border border-stone-800 rounded-lg px-3 py-2 text-stone-200"
               />
@@ -147,7 +173,7 @@ export default function AdminSettingsPage() {
               <label className="block text-stone-400 mb-1">Phone Number</label>
               <input
                 type="text"
-                value={settings.phone}
+                value={settings.phone || ''}
                 onChange={(e) => setSettings({ ...settings, phone: e.target.value })}
                 className="w-full bg-stone-950 border border-stone-800 rounded-lg px-3 py-2 text-stone-200"
               />
@@ -157,7 +183,7 @@ export default function AdminSettingsPage() {
               <label className="block text-stone-400 mb-1">Instagram URL</label>
               <input
                 type="text"
-                value={settings.instagram_url}
+                value={settings.instagram_url || ''}
                 onChange={(e) => setSettings({ ...settings, instagram_url: e.target.value })}
                 className="w-full bg-stone-950 border border-stone-800 rounded-lg px-3 py-2 text-stone-200"
               />
@@ -167,7 +193,7 @@ export default function AdminSettingsPage() {
               <label className="block text-stone-400 mb-1">Physical Studio Address</label>
               <input
                 type="text"
-                value={settings.address}
+                value={settings.address || ''}
                 onChange={(e) => setSettings({ ...settings, address: e.target.value })}
                 className="w-full bg-stone-950 border border-stone-800 rounded-lg px-3 py-2 text-stone-200"
               />
@@ -181,7 +207,7 @@ export default function AdminSettingsPage() {
               <label className="block text-stone-400 mb-1">Flat Indian Shipping Rate (₹)</label>
               <input
                 type="number"
-                value={settings.flat_shipping_rate}
+                value={settings.flat_shipping_rate ?? 0}
                 onChange={(e) => setSettings({ ...settings, flat_shipping_rate: Number(e.target.value) })}
                 className="w-full bg-stone-950 border border-stone-800 rounded-lg px-3 py-2 font-mono text-amber-200"
               />
@@ -191,7 +217,7 @@ export default function AdminSettingsPage() {
               <label className="block text-stone-400 mb-1">Free Shipping Order Threshold (₹)</label>
               <input
                 type="number"
-                value={settings.free_shipping_threshold}
+                value={settings.free_shipping_threshold ?? 0}
                 onChange={(e) => setSettings({ ...settings, free_shipping_threshold: Number(e.target.value) })}
                 className="w-full bg-stone-950 border border-stone-800 rounded-lg px-3 py-2 font-mono text-amber-200"
               />
@@ -201,7 +227,7 @@ export default function AdminSettingsPage() {
               <label className="block text-stone-400 mb-1">GST Tax Percentage (%)</label>
               <input
                 type="number"
-                value={settings.tax_percentage}
+                value={settings.tax_percentage ?? 0}
                 onChange={(e) => setSettings({ ...settings, tax_percentage: Number(e.target.value) })}
                 className="w-full bg-stone-950 border border-stone-800 rounded-lg px-3 py-2 font-mono"
               />
@@ -220,14 +246,38 @@ export default function AdminSettingsPage() {
             </div>
           </div>
 
+          {/* Studio Payment Receiving UPI QR */}
+          <h2 className="font-serif text-lg font-bold text-amber-200 border-b border-stone-800 pb-2 pt-2">4. Studio Payment Receiving UPI QR (Google Pay / GPay)</h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label className="block text-stone-400 mb-1">GPay UPI VPA / Address *</label>
+              <input
+                type="text"
+                value={settings.payment_upi_id || '9284724914@okbizaxis'}
+                onChange={(e) => setSettings({ ...settings, payment_upi_id: e.target.value })}
+                className="w-full bg-stone-950 border border-stone-800 rounded-lg px-3 py-2 font-mono text-emerald-400 font-bold"
+              />
+            </div>
+
+            <div>
+              <label className="block text-stone-400 mb-1">GPay Mobile Number *</label>
+              <input
+                type="text"
+                value={settings.payment_upi_mobile || '9284724914'}
+                onChange={(e) => setSettings({ ...settings, payment_upi_mobile: e.target.value })}
+                className="w-full bg-stone-950 border border-stone-800 rounded-lg px-3 py-2 font-mono text-amber-200 font-bold"
+              />
+            </div>
+          </div>
+
           {/* Payment Gateway Credentials */}
-          <h2 className="font-serif text-lg font-bold text-amber-200 border-b border-stone-800 pb-2 pt-2">4. Razorpay Payment Gateway Keys</h2>
+          <h2 className="font-serif text-lg font-bold text-amber-200 border-b border-stone-800 pb-2 pt-2">5. Razorpay Payment Gateway Keys</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <label className="block text-stone-400 mb-1">Razorpay Key ID</label>
               <input
                 type="text"
-                value={settings.razorpay_key_id}
+                value={settings.razorpay_key_id || ''}
                 onChange={(e) => setSettings({ ...settings, razorpay_key_id: e.target.value })}
                 className="w-full bg-stone-950 border border-stone-800 rounded-lg px-3 py-2 font-mono text-amber-200"
               />
@@ -237,7 +287,7 @@ export default function AdminSettingsPage() {
               <label className="block text-stone-400 mb-1">Razorpay Key Secret</label>
               <input
                 type="password"
-                value={settings.razorpay_key_secret}
+                value={settings.razorpay_key_secret || ''}
                 onChange={(e) => setSettings({ ...settings, razorpay_key_secret: e.target.value })}
                 className="w-full bg-stone-950 border border-stone-800 rounded-lg px-3 py-2 font-mono text-amber-200"
               />

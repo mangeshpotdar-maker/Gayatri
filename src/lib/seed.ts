@@ -8,8 +8,8 @@ export function seedDatabase() {
   const settingsCount = (db.prepare('SELECT COUNT(*) as count FROM store_settings').get() as { count: number }).count;
   if (settingsCount === 0) {
     db.prepare(`
-      INSERT INTO store_settings (id, store_name, artist_name, tagline, bio, craft_philosophy, artist_photo, logo, email, phone, whatsapp_number, address, instagram_url, currency_symbol, flat_shipping_rate, free_shipping_threshold, tax_enabled, tax_percentage, tax_inclusive)
-      VALUES (1, 'KalaKriti Arts Studio', 'Ananya Sharma', 'Handmade Indian Heritage & Contemporary Crafts', 'Ananya Sharma is an artisan based in Jaipur, India. She merges centuries-old heritage crafts like Lippan Kaam with modern resin art and textured canvas paintings.', 'Each creation is crafted by hand using eco-friendly and sustainably sourced Indian materials.', 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&q=80&w=800', '/logo.png', 'ananya@kalakritiarts.in', '+91 98765 43210', '919876543210', 'Studio 12, Craft Village, Jaipur, Rajasthan 302001', 'https://instagram.com/kalakriti_arts', '₹', 100.0, 1999.0, 0, 18.0, 1)
+      INSERT INTO store_settings (id, store_name, artist_name, tagline, bio, craft_philosophy, artist_photo, logo, email, phone, whatsapp_number, address, instagram_url, currency_symbol, flat_shipping_rate, free_shipping_threshold, tax_enabled, tax_percentage, tax_inclusive, studio_location, studio_badge)
+      VALUES (1, 'Gayatris Creations', 'Gayatri Potdar', 'Handmade Indian Heritage & Contemporary Crafts', 'Gayatri Potdar is an artisan based in Pune, India. She merges centuries-old heritage crafts like Lippan Kaam with modern resin art and textured canvas paintings.', 'Each creation is crafted by hand using eco-friendly and sustainably sourced Indian materials.', 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&q=80&w=800', '/logo.png', 'soniyapandit@gmail.com', '+91 92847 24914', '9284724914', 'Pune, Maharashtra 411001', 'https://instagram.com/gayatris_creations', '₹', 100.0, 1999.0, 0, 18.0, 1, 'Pune, Maharashtra Studio', '100% Authentic Handcraft')
     `).run();
   }
 
@@ -17,7 +17,7 @@ export function seedDatabase() {
   if (homepageCount === 0) {
     db.prepare(`
       INSERT INTO homepage_sections (id, hero_title, hero_subtitle, hero_cta_text, hero_cta_link, hero_image, why_handmade_title, why_handmade_content)
-      VALUES (1, 'Exquisite Handmade Art from Jaipur', 'Discover authentic Canvas Paintings, Lippan Art, Scented Wax Candles, Resin Decor & MDF Crafts.', 'Explore Collection', '/shop', 'https://images.unsplash.com/photo-1579783902614-a3fb3927b675?auto=format&fit=crop&q=80&w=1200', 'Why Choose Handmade Artwork?', 'Every single piece is lovingly handcrafted using premium quality non-toxic materials. Owning handmade art brings authentic cultural heritage and artistic soul into your living spaces.')
+      VALUES (1, 'Exquisite Handmade Art from Pune', 'Discover authentic Canvas Paintings, Lippan Art, Scented Wax Candles, Resin Decor & MDF Crafts.', 'Explore Collection', '/shop', 'https://images.unsplash.com/photo-1579783902614-a3fb3927b675?auto=format&fit=crop&q=80&w=1200', 'Why Choose Handmade Artwork?', 'Every single piece is lovingly handcrafted using premium quality non-toxic materials. Owning handmade art brings authentic cultural heritage and artistic soul into your living spaces.')
     `).run();
   }
 
@@ -27,7 +27,7 @@ export function seedDatabase() {
     const passwordHash = bcrypt.hashSync('admin123', 10);
     db.prepare(`
       INSERT INTO admin_users (id, email, password_hash, name)
-      VALUES ('admin-1', 'admin@kalakritiarts.in', ?, 'Ananya Sharma')
+      VALUES ('admin-1', 'soniyapandit@gmail.com', ?, 'Gayatri Potdar')
     `).run(passwordHash);
   }
 
@@ -98,7 +98,7 @@ export function seedDatabase() {
         slug: 'golden-horizon-textured-canvas-painting',
         sku: 'CNV-GOL-01',
         category_id: 'cat-canvas',
-        description: 'Hand-painted with gold leaf and thick acrylic texture strokes. Captures the sunrise over Thar desert.',
+        description: 'Hand-painted with gold leaf and thick acrylic texture strokes.',
         short_description: '24x36 inch gold leaf textured acrylic wall painting.',
         price: 3500,
         sale_price: 2999,
@@ -118,7 +118,7 @@ export function seedDatabase() {
         is_bestseller: 1,
         is_limited_edition: 1,
         is_active: 1,
-        seo_title: 'Golden Horizon Canvas Painting | KalaKriti Arts',
+        seo_title: 'Golden Horizon Canvas Painting | Gayatris Creations',
         seo_description: 'Buy handmade golden horizon acrylic canvas painting online with real gold leaf accents.',
         images: [
           'https://images.unsplash.com/photo-1579783902614-a3fb3927b675?auto=format&fit=crop&q=80&w=800',
@@ -151,8 +151,8 @@ export function seedDatabase() {
         is_bestseller: 0,
         is_limited_edition: 0,
         is_active: 1,
-        seo_title: 'Lotus Bloom Canvas Art | KalaKriti Arts',
-        seo_description: 'Serene botanical lotus canvas wall painting handcrafted in Jaipur.',
+        seo_title: 'Lotus Bloom Canvas Art | Gayatris Creations',
+        seo_description: 'Serene botanical lotus canvas wall painting handcrafted in Pune.',
         images: [
           'https://images.unsplash.com/photo-1582562124811-c09040d0a901?auto=format&fit=crop&q=80&w=800'
         ]
@@ -168,7 +168,7 @@ export function seedDatabase() {
         price: 4500,
         sale_price: null,
         cost_price: 1500,
-        stock: 0, // Sold out item
+        stock: 0,
         min_stock_alert: 1,
         dimensions: '30 x 30 inches',
         weight: '2.2 kg',
@@ -249,7 +249,7 @@ export function seedDatabase() {
         is_bestseller: 0,
         is_limited_edition: 0,
         is_active: 1,
-        seo_title: 'Decorative Wooden Key Holder | KalaKriti Arts',
+        seo_title: 'Decorative Wooden Key Holder | Gayatris Creations',
         seo_description: 'Hand painted welcome home key hanger for entryway.',
         images: [
           'https://images.unsplash.com/photo-1507652313519-d4e9174996dd?auto=format&fit=crop&q=80&w=800'
@@ -266,7 +266,7 @@ export function seedDatabase() {
         price: 990,
         sale_price: 899,
         cost_price: 320,
-        stock: 1, // Low stock product
+        stock: 1,
         min_stock_alert: 2,
         dimensions: '10 x 10 inches',
         weight: '600 g',
@@ -295,7 +295,7 @@ export function seedDatabase() {
         slug: 'traditional-kutch-lippan-mirror-art-panel',
         sku: 'LIP-KUT-01',
         category_id: 'cat-lippan',
-        description: 'Authentic Gujarati Lippan Kaam mud and glass mirror work on wooden backing. Hand-molded clay reliefs depicting geometric peace symbols.',
+        description: 'Authentic Gujarati Lippan Kaam mud and glass mirror work on wooden backing.',
         short_description: '16x16 inch round Lippan Kaam wall medallion.',
         price: 2800,
         sale_price: 2499,
@@ -393,7 +393,7 @@ export function seedDatabase() {
         slug: 'royal-jasmine-mogra-soy-wax-jar-candle',
         sku: 'CND-JAS-01',
         category_id: 'cat-candles',
-        description: 'Hand-poured 100% natural soy wax infused with authentic Madurai Jasmine & Mogra essential oils. Clean burn for up to 45 hours.',
+        description: 'Hand-poured 100% natural soy wax infused with authentic Madurai Jasmine & Mogra essential oils.',
         short_description: '250g aromatherapy soy wax candle in frosted glass jar.',
         price: 799,
         sale_price: 649,
@@ -462,7 +462,7 @@ export function seedDatabase() {
         price: 1100,
         sale_price: 899,
         cost_price: 350,
-        stock: 2, // Low stock
+        stock: 2,
         min_stock_alert: 3,
         dimensions: '4 x 3 inches',
         weight: '300 g wax',
@@ -511,7 +511,7 @@ export function seedDatabase() {
         is_bestseller: 1,
         is_limited_edition: 0,
         is_active: 1,
-        seo_title: 'Ocean Wave Resin & Teak Platter | KalaKriti',
+        seo_title: 'Ocean Wave Resin & Teak Platter | Gayatris Creations',
         seo_description: 'Handmade resin ocean wave wood cheese board platter.',
         images: [
           'https://images.unsplash.com/photo-1565193566173-7a0ee3dbe261?auto=format&fit=crop&q=80&w=800'
@@ -648,4 +648,11 @@ export function seedDatabase() {
       insertCoupon.run(coup);
     }
   }
+}
+
+// Auto-execute if executed directly via CLI
+if (typeof require !== 'undefined' && require.main === module) {
+  seedDatabase();
+} else {
+  seedDatabase();
 }

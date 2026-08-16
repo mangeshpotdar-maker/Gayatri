@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import AdminSidebar from '@/components/AdminSidebar';
-import { Plus, Edit2, Trash2, QrCode, Search, Image as ImageIcon, X } from 'lucide-react';
+import { Plus, Edit2, Trash2, QrCode, Search, Image as ImageIcon, X, Link as LinkIcon, Download } from 'lucide-react';
 
 export default function AdminProductsPage() {
   const [products, setProducts] = useState<any[]>([]);
@@ -38,6 +38,10 @@ export default function AdminProductsPage() {
   const [isActive, setIsActive] = useState(true);
   const [imageUrls, setImageUrls] = useState<string[]>(['']);
 
+  // Social Importer
+  const [socialUrl, setSocialUrl] = useState('');
+  const [importingSocial, setImportingSocial] = useState(false);
+
   // QR Modal
   const [qrProduct, setQrProduct] = useState<any>(null);
 
@@ -62,17 +66,18 @@ export default function AdminProductsPage() {
   };
 
   const handleOpenForm = (prod: any = null) => {
+    setSocialUrl('');
     if (prod) {
       setEditId(prod.id);
-      setName(prod.name);
-      setSlug(prod.slug);
+      setName(prod.name || '');
+      setSlug(prod.slug || '');
       setSku(prod.sku || '');
       setCategoryId(prod.category_id || '');
-      setPrice(prod.price);
-      setSalePrice(prod.sale_price !== null ? String(prod.sale_price) : '');
-      setCostPrice(prod.cost_price !== null ? String(prod.cost_price) : '');
-      setStock(prod.stock);
-      setMinStockAlert(prod.min_stock_alert);
+      setPrice(prod.price ?? 0);
+      setSalePrice(prod.sale_price !== null && prod.sale_price !== undefined ? String(prod.sale_price) : '');
+      setCostPrice(prod.cost_price !== null && prod.cost_price !== undefined ? String(prod.cost_price) : '');
+      setStock(prod.stock ?? 0);
+      setMinStockAlert(prod.min_stock_alert ?? 2);
       setDescription(prod.description || '');
       setShortDescription(prod.short_description || '');
       setDimensions(prod.dimensions || '');
@@ -118,6 +123,29 @@ export default function AdminProductsPage() {
       setImageUrls(['https://images.unsplash.com/photo-1579783902614-a3fb3927b675?auto=format&fit=crop&q=80&w=800']);
     }
     setIsFormOpen(true);
+  };
+
+  const handleImportSocial = async () => {
+    if (!socialUrl.trim()) return;
+    setImportingSocial(true);
+    try {
+      const res = await fetch('/api/products/import-social', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ url: socialUrl.trim() })
+      }).then((r) => r.json());
+
+      if (res.data) {
+        if (res.data.title) setName(res.data.title);
+        if (res.data.price) setPrice(res.data.price);
+        if (res.data.description) setDescription(res.data.description);
+        if (res.data.images && res.data.images.length > 0) setImageUrls(res.data.images);
+      }
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setImportingSocial(false);
+    }
   };
 
   const handleSaveProduct = async (e: React.FormEvent) => {
@@ -261,6 +289,32 @@ export default function AdminProductsPage() {
               <button onClick={() => setIsFormOpen(false)} className="text-stone-400 hover:text-amber-300">
                 <X className="w-5 h-5" />
               </button>
+            </div>
+
+            {/* WhatsApp / Instagram Link Importer */}
+            <div className="bg-amber-950/40 border border-amber-800/50 rounded-xl p-3.5 space-y-2 text-xs">
+              <label className="font-bold text-amber-200 flex items-center gap-1.5">
+                <LinkIcon className="w-3.5 h-3.5 text-emerald-400" />
+                Import Image ^& Price from WhatsApp Catalog or Instagram URL
+              </label>
+              <div className="flex gap-2">
+                <input
+                  type="text"
+                  value={socialUrl}
+                  onChange={(e) => setSocialUrl(e.target.value)}
+                  placeholder="Paste WhatsApp post link or Instagram post URL..."
+                  className="flex-1 bg-stone-950 border border-stone-800 rounded-lg px-3 py-2 text-stone-200 font-mono"
+                />
+                <button
+                  type="button"
+                  onClick={handleImportSocial}
+                  disabled={importingSocial}
+                  className="bg-emerald-800 hover:bg-emerald-700 text-white px-4 py-2 rounded-lg font-bold flex items-center gap-1 transition"
+                >
+                  <Download className="w-3.5 h-3.5" />
+                  {importingSocial ? 'Extracting...' : 'Extract Data'}
+                </button>
+              </div>
             </div>
 
             <form onSubmit={handleSaveProduct} className="space-y-4 text-xs">

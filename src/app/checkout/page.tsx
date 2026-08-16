@@ -362,11 +362,14 @@ export default function CheckoutPage() {
             {/* UPI QR Display */}
             <div className="bg-stone-50 p-4 rounded-xl inline-block border border-amber-900/10 shadow-sm">
               <img
-                src={`/api/qr?url=${encodeURIComponent(`upi://pay?pa=kalakriti@upi&pn=KalaKritiArts&am=${pendingOrder.amount / 100}&cu=INR&tn=${pendingOrder.order_number}`)}`}
-                alt="UPI Payment QR"
+                src={`/api/qr?url=${encodeURIComponent(`upi://pay?pa=9284724914@okbizaxis&pn=Gayatris%20Creations&am=${pendingOrder.amount / 100}&cu=INR&tn=${pendingOrder.order_number}`)}`}
+                alt="GPay UPI Payment QR"
                 className="w-48 h-48 mx-auto"
               />
-              <p className="text-[10px] text-stone-600 font-mono mt-2 font-bold">Scan with GPay / PhonePe / Paytm / BHIM</p>
+              <p className="text-[10px] text-stone-700 font-mono mt-2 font-bold">
+                GPay UPI ID: 9284724914@okbizaxis • Mobile: 9284724914
+              </p>
+              <p className="text-[10px] text-stone-500 font-mono">Scan with Google Pay (GPay) / PhonePe / Paytm / BHIM</p>
             </div>
 
             <div className="space-y-2">

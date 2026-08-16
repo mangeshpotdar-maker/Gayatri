@@ -183,6 +183,15 @@ export async function DELETE(request: Request) {
     const db = getDb();
     const { searchParams } = new URL(request.url);
     const id = searchParams.get('id');
+    const clearAll = searchParams.get('clearAll') === 'true';
+
+    if (clearAll) {
+      db.transaction(() => {
+        db.prepare('DELETE FROM product_images').run();
+        db.prepare('DELETE FROM products').run();
+      })();
+      return NextResponse.json({ success: true, message: 'All seed products cleared successfully. You can now start fresh uploading via WhatsApp Catalog.' });
+    }
 
     if (!id) {
       return NextResponse.json({ error: 'Product ID is required' }, { status: 400 });

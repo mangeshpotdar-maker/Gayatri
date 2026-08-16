@@ -206,12 +206,25 @@ export default function AdminProductsPage() {
             <h1 className="font-serif text-3xl font-semibold text-amber-100">Product Management</h1>
             <p className="text-xs text-stone-400 mt-1">Manage single-artisan inventory, pricing, images and QR codes.</p>
           </div>
-          <button
-            onClick={() => handleOpenForm()}
-            className="bg-amber-700 hover:bg-amber-600 text-amber-50 px-5 py-2.5 rounded-xl text-xs font-bold transition flex items-center gap-1.5 shadow-lg"
-          >
-            <Plus className="w-4 h-4" /> Add Product
-          </button>
+          <div className="flex gap-3">
+            <button
+              onClick={async () => {
+                if (confirm('⚠️ WARNING: This will DELETE ALL current seed artworks from your catalog so you can start fresh uploading from WhatsApp Catalog. Are you sure?')) {
+                  await fetch('/api/products?clearAll=true', { method: 'DELETE' });
+                  loadData();
+                }
+              }}
+              className="bg-rose-950/80 hover:bg-rose-900 text-rose-200 border border-rose-800 px-4 py-2.5 rounded-xl text-xs font-bold transition flex items-center gap-1.5 shadow-md"
+            >
+              <Trash2 className="w-4 h-4 text-rose-400" /> Clear All Seed Products
+            </button>
+            <button
+              onClick={() => handleOpenForm()}
+              className="bg-amber-700 hover:bg-amber-600 text-amber-50 px-5 py-2.5 rounded-xl text-xs font-bold transition flex items-center gap-1.5 shadow-lg"
+            >
+              <Plus className="w-4 h-4" /> Add Product
+            </button>
+          </div>
         </div>
 
         {/* Product Table */}

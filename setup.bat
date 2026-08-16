@@ -2,7 +2,7 @@
 :: Ensure working directory is set to script folder even if "Run as Administrator" defaults to C:\Windows\System32
 cd /d "%~dp0"
 
-TITLE KalaKriti Arts Studio - Windows One-Click Installer
+TITLE KalaKriti Arts Studio - Verbose Windows Installer
 COLOR 1F
 
 :: Ensure Target Directory Exists
@@ -11,7 +11,7 @@ if not exist "C:\Mangesh\Jules\GayatriPortal" (
 )
 
 echo [=======================================================================] > "C:\Mangesh\Jules\GayatriPortal\install.log"
-echo [   KALAKRITI ARTS STUDIO - AUTOMATED ONE-CLICK INSTALLATION LOG        ] >> "C:\Mangesh\Jules\GayatriPortal\install.log"
+echo [   KALAKRITI ARTS STUDIO - VERBOSE ONE-CLICK INSTALLATION LOG           ] >> "C:\Mangesh\Jules\GayatriPortal\install.log"
 echo [=======================================================================] >> "C:\Mangesh\Jules\GayatriPortal\install.log"
 echo Date: %date% Time: %time% >> "C:\Mangesh\Jules\GayatriPortal\install.log"
 echo Script Directory: %~dp0 >> "C:\Mangesh\Jules\GayatriPortal\install.log"
@@ -19,7 +19,7 @@ echo Target Directory: C:\Mangesh\Jules\GayatriPortal >> "C:\Mangesh\Jules\Gayat
 echo. >> "C:\Mangesh\Jules\GayatriPortal\install.log"
 
 echo =======================================================================
-echo          KALAKRITI ARTS STUDIO - AUTOMATED 1-CLICK INSTALLER
+echo          KALAKRITI ARTS STUDIO - VERBOSE ONE-CLICK INSTALLER
 echo =======================================================================
 echo.
 echo Project Directory: %~dp0
@@ -70,11 +70,14 @@ echo Node.js version:
 node -v
 echo.
 
-echo [2/4] Installing NPM Dependencies...
-echo [%date% %time%] [INFO] Installing NPM dependencies in %CD%... >> "C:\Mangesh\Jules\GayatriPortal\install.log"
-call npm install >> "C:\Mangesh\Jules\GayatriPortal\install.log" 2>> "C:\Mangesh\Jules\GayatriPortal\error.log"
+echo [2/4] Installing NPM Dependencies (VERBOSE MODE)...
+echo [%date% %time%] [INFO] Installing NPM dependencies in %CD% (Verbose)... >> "C:\Mangesh\Jules\GayatriPortal\install.log"
+
+:: Execute npm install with live verbose output and append to log
+call npm install --loglevel info
 if %errorlevel% neq 0 (
     COLOR 4F
+    echo.
     echo [ERROR] Dependency installation failed! Check C:\Mangesh\Jules\GayatriPortal\error.log for details.
     echo [%date% %time%] [ERROR] NPM install failed. >> "C:\Mangesh\Jules\GayatriPortal\error.log"
     pause
@@ -83,11 +86,12 @@ if %errorlevel% neq 0 (
 echo Dependencies installed successfully!
 echo.
 
-echo [3/4] Initializing Database ^& Loading Seed Artworks...
+echo [3/4] Initializing Database ^& Loading Seed Artworks (VERBOSE)...
 echo [%date% %time%] [INFO] Running Database Setup Wizard... >> "C:\Mangesh\Jules\GayatriPortal\install.log"
 call npm run setup
 if %errorlevel% neq 0 (
     COLOR 4F
+    echo.
     echo [ERROR] Database setup script failed! Check C:\Mangesh\Jules\GayatriPortal\error.log for details.
     echo [%date% %time%] [ERROR] Setup script failed. >> "C:\Mangesh\Jules\GayatriPortal\error.log"
     pause

@@ -144,16 +144,16 @@ async function installProgressStep() {
     console.log("\n  Overall Progress:");
     console.log(`  [${filledBar}${emptyBar}]  ${percent}%\n`);
 
-    if (i === 2 || i === 3 || i === 4) {
+    if (i === 2) {
       try {
-        execSync('node -e "require(\'./src/lib/seed.ts\')"', { stdio: 'ignore' });
+        execSync('npx tsx src/lib/seed.ts', { stdio: 'inherit' });
         writeLog(`Successfully executed database seed routine for task: ${tasks[i]}`);
       } catch (e) {
         writeLog(`Error executing seed routine: ${e.message}`, true);
       }
     }
 
-    await sleep(300);
+    await sleep(200);
   }
 }
 

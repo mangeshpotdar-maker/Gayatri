@@ -16,7 +16,7 @@ function Write-InstallLog($message, $isError = $false) {
     if ($isError) {
         Add-Content -Path $ErrorLog -Value $line
     }
-    Write-Host $message
+    Write-Host "[VERBOSE] $message" -ForegroundColor Cyan
 }
 
 Write-InstallLog "Checking system prerequisites for KalaKriti Arts Studio..."
@@ -27,7 +27,7 @@ try {
     $nodeVer = & node -v 2>$null
     if ($nodeVer) {
         $nodeInstalled = $true
-        Write-InstallLog "Node.js is already installed: $nodeVer"
+        Write-InstallLog "Node.js detected: $nodeVer"
     }
 } catch {
     $nodeInstalled = $false
@@ -41,16 +41,15 @@ if (-not $nodeInstalled) {
 
     try {
         [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
+        Write-InstallLog "Downloading installer from $nodeMsiUrl..."
         Invoke-WebRequest -Uri $nodeMsiUrl -OutFile $tempMsiPath -UseBasicParsing
         Write-InstallLog "Downloaded Node.js MSI installer to $tempMsiPath"
 
-        Write-InstallLog "Installing Node.js silently (msiexec)... Please wait..."
+        Write-InstallLog "Executing silent MSI installer (msiexec)... Please wait..."
         $installProcess = Start-Process -FilePath "msiexec.exe" -ArgumentList "/i `"$tempMsiPath`" /qn /norestart" -Wait -PassThru
 
         if ($installProcess.ExitCode -eq 0 -or $installProcess.ExitCode -eq 3010) {
             Write-InstallLog "Node.js successfully installed!"
-
-            # Refresh PATH for current PowerShell process
             $env:Path = [System.Environment]::GetEnvironmentVariable("Path", "Machine") + ";" + [System.Environment]::GetEnvironmentVariable("Path", "User")
         } else {
             Write-InstallLog "Node.js installation exited with code $($installProcess.ExitCode)" $true

@@ -9,7 +9,7 @@ export default function AdminQRCenterPage() {
   const [selectedProductSlug, setSelectedProductSlug] = useState('');
   const [qrType, setQrType] = useState<'store' | 'product' | 'payment'>('store');
   const [storeUrl, setStoreUrl] = useState('http://localhost:3000');
-  const [paymentUpi, setPaymentUpi] = useState('9284724914@okbizaxis');
+  const [paymentUpi, setPaymentUpi] = useState('soniyapandit-1@okicici');
   const [paymentAmount, setPaymentAmount] = useState('1000');
 
   useEffect(() => {

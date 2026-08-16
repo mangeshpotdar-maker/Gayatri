@@ -28,7 +28,7 @@ export default function AdminSettingsPage() {
     razorpay_key_id: '',
     razorpay_key_secret: '',
     razorpay_webhook_secret: '',
-    payment_upi_id: '9284724914@okbizaxis',
+    payment_upi_id: 'soniyapandit-1@okicici',
     payment_upi_mobile: '9284724914'
   });
   const [savedMsg, setSavedMsg] = useState('');
@@ -253,7 +253,7 @@ export default function AdminSettingsPage() {
               <label className="block text-stone-400 mb-1">GPay UPI VPA / Address *</label>
               <input
                 type="text"
-                value={settings.payment_upi_id || '9284724914@okbizaxis'}
+                value={settings.payment_upi_id || 'soniyapandit-1@okicici'}
                 onChange={(e) => setSettings({ ...settings, payment_upi_id: e.target.value })}
                 className="w-full bg-stone-950 border border-stone-800 rounded-lg px-3 py-2 font-mono text-emerald-400 font-bold"
               />

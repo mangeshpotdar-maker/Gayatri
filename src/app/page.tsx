@@ -164,11 +164,18 @@ export default function HomePage() {
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
               <div className="lg:col-span-5 relative">
-                <div className="aspect-4/5 rounded-2xl overflow-hidden border-2 border-amber-300/80 shadow-2xl">
+                <div className="aspect-4/5 rounded-2xl overflow-hidden border-2 border-amber-300/80 shadow-2xl bg-amber-100 flex items-center justify-center">
                   <img
-                    src={settings?.artist_photo || 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&q=80&w=800'}
-                    alt={settings?.artist_name || 'Ananya Sharma'}
+                    src={
+                      settings?.artist_photo && !settings.artist_photo.startsWith('file://')
+                        ? settings.artist_photo
+                        : 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&q=80&w=800'
+                    }
+                    alt={settings?.artist_name || 'Gayatri Potdar'}
                     className="w-full h-full object-cover filter saturate-105"
+                    onError={(e) => {
+                      (e.target as HTMLImageElement).src = 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&q=80&w=800';
+                    }}
                   />
                 </div>
                 <div className="absolute -bottom-6 -right-6 bg-white border border-amber-300 p-4 rounded-xl shadow-xl hidden sm:block">

@@ -107,6 +107,7 @@ export default function CheckoutPage() {
   const handleConfirmPayment = async (simulateSuccess = true) => {
     if (!pendingOrder) return;
     setIsSubmitting(true);
+    setErrorMsg('');
 
     try {
       const verifyRes = await fetch('/api/checkout/verify', {
@@ -116,7 +117,7 @@ export default function CheckoutPage() {
           order_id: pendingOrder.order_id,
           razorpay_order_id: pendingOrder.razorpay_order_id,
           razorpay_payment_id: `pay_sim_${Date.now()}`,
-          razorpay_signature: `sig_sim_${Date.now()}`,
+          razorpay_signature: simulateSuccess ? `sig_sim_${Date.now()}` : 'invalid_sig_failed',
           simulate_success: simulateSuccess
         })
       }).then((r) => r.json());
@@ -125,13 +126,14 @@ export default function CheckoutPage() {
         clearCart();
         router.push(`/order-confirmation/${pendingOrder.order_id}`);
       } else {
-        setErrorMsg(verifyRes.error || 'Payment verification failed');
+        setErrorMsg(verifyRes.error || 'Payment failed or was declined by user.');
+        setShowSimulatedUpiModal(false);
       }
     } catch (e: any) {
-      setErrorMsg(e.message);
+      setErrorMsg(e.message || 'Payment processing error');
+      setShowSimulatedUpiModal(false);
     } finally {
       setIsSubmitting(false);
-      setShowSimulatedUpiModal(false);
     }
   };
 
@@ -362,12 +364,12 @@ export default function CheckoutPage() {
             {/* UPI QR Display */}
             <div className="bg-stone-50 p-4 rounded-xl inline-block border border-amber-900/10 shadow-sm">
               <img
-                src={`/api/qr?url=${encodeURIComponent(`upi://pay?pa=9284724914@okbizaxis&pn=Gayatris%20Creations&am=${pendingOrder.amount / 100}&cu=INR&tn=${pendingOrder.order_number}`)}`}
+                src={`/api/qr?url=${encodeURIComponent(`upi://pay?pa=soniyapandit-1@okicici&pn=Gayatris%20Creations&am=${pendingOrder.amount / 100}&cu=INR&tn=${pendingOrder.order_number}`)}`}
                 alt="GPay UPI Payment QR"
                 className="w-48 h-48 mx-auto"
               />
               <p className="text-[10px] text-stone-700 font-mono mt-2 font-bold">
-                GPay UPI ID: 9284724914@okbizaxis • Mobile: 9284724914
+                GPay UPI ID: soniyapandit-1@okicici • Mobile: 9284724914
               </p>
               <p className="text-[10px] text-stone-500 font-mono">Scan with Google Pay (GPay) / PhonePe / Paytm / BHIM</p>
             </div>

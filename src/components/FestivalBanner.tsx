@@ -23,7 +23,7 @@ export default function FestivalBanner() {
 
     let festival: FestivalGreeting | null = null;
 
-    // 15th August - Independence Day
+    // 15th August - Independence Day (1947 to 2025 = 78 Years of Freedom)
     if (month === 8 && day >= 10 && day <= 17) {
       festival = {
         name: "Independence Day",

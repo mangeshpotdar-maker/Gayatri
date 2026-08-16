@@ -22,8 +22,9 @@ export async function POST(request: Request) {
       return NextResponse.json({ success: true, message: 'Order payment is already verified', order });
     }
 
-    const settings = db.prepare('SELECT razorpay_key_secret FROM store_settings WHERE id = 1').get() as { razorpay_key_secret: string };
-    const secret = settings ? settings.razorpay_key_secret : (process.env.RAZORPAY_KEY_SECRET || 'sampleSecretKey456');
+    const settings = db.prepare('SELECT razorpay_key_secret FROM store_settings WHERE id = 1').get() as { razorpay_key_secret?: string } | undefined;
+    const rawSecret = settings?.razorpay_key_secret || process.env.RAZORPAY_KEY_SECRET;
+    const hmacSecret = (typeof rawSecret === 'string' && rawSecret.trim().length > 0) ? rawSecret.trim() : 'sampleSecretKey456';
 
     let isSignatureValid = false;
 
@@ -32,11 +33,13 @@ export async function POST(request: Request) {
 
     if (simulate_success && isSimulationAllowed) {
       isSignatureValid = true;
+    } else if (simulate_success === false) {
+      isSignatureValid = false;
     } else if (razorpay_signature && razorpay_signature.startsWith('sig_sim_') && isSimulationAllowed) {
       isSignatureValid = true;
     } else if (razorpay_order_id && razorpay_payment_id && razorpay_signature) {
       const generatedSignature = crypto
-        .createHmac('sha256', secret)
+        .createHmac('sha256', hmacSecret)
         .update(`${razorpay_order_id}|${razorpay_payment_id}`)
         .digest('hex');
       isSignatureValid = (generatedSignature === razorpay_signature);

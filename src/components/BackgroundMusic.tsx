@@ -17,28 +17,28 @@ const SEASONAL_TRACKS: SeasonalTrack[] = [
     season: 'Monsoon & Heritage',
     title: 'Raga Megh Sitar Harmony',
     instrument: 'Sitar & Tanpura',
-    audioUrl: 'https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3?filename=indian-classical-ambient-11234.mp3'
+    audioUrl: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3'
   },
   {
     id: 'shehnai-festive',
     season: 'Festive Celebration',
     title: 'Utsav Festive Shehnai',
     instrument: 'Shehnai & Tabla',
-    audioUrl: 'https://cdn.pixabay.com/download/audio/2022/01/18/audio_d0a13f69d2.mp3?filename=flute-and-sitar-ambient-18302.mp3'
+    audioUrl: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3'
   },
   {
     id: 'flute-autumn',
     season: 'Autumn Serenade',
     title: 'Bansuri Bamboo Flute',
     instrument: 'Indian Flute',
-    audioUrl: 'https://cdn.pixabay.com/download/audio/2021/08/09/audio_88432a1012.mp3?filename=meditation-flute-6380.mp3'
+    audioUrl: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3'
   },
   {
     id: 'santoor-spring',
     season: 'Spring Blossom',
     title: 'Kashmiri Santoor Echoes',
     instrument: 'Santoor Waves',
-    audioUrl: 'https://cdn.pixabay.com/download/audio/2022/03/15/audio_c8c871239e.mp3?filename=relaxing-indian-acoustic-10234.mp3'
+    audioUrl: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-4.mp3'
   }
 ];
 

@@ -1,4 +1,7 @@
 @echo off
+:: Ensure working directory is set to script folder even if "Run as Administrator" defaults to C:\Windows\System32
+cd /d "%~dp0"
+
 TITLE KalaKriti Arts Studio - Server Launcher
 COLOR 0A
 

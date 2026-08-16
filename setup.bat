@@ -1,4 +1,7 @@
 @echo off
+:: Ensure working directory is set to script folder even if "Run as Administrator" defaults to C:\Windows\System32
+cd /d "%~dp0"
+
 TITLE KalaKriti Arts Studio - Windows One-Click Installer
 COLOR 1F
 
@@ -11,15 +14,27 @@ echo [=======================================================================] >
 echo [   KALAKRITI ARTS STUDIO - AUTOMATED ONE-CLICK INSTALLATION LOG        ] >> "C:\Mangesh\Jules\GayatriPortal\install.log"
 echo [=======================================================================] >> "C:\Mangesh\Jules\GayatriPortal\install.log"
 echo Date: %date% Time: %time% >> "C:\Mangesh\Jules\GayatriPortal\install.log"
-echo Base Directory: C:\Mangesh\Jules\GayatriPortal >> "C:\Mangesh\Jules\GayatriPortal\install.log"
+echo Script Directory: %~dp0 >> "C:\Mangesh\Jules\GayatriPortal\install.log"
+echo Target Directory: C:\Mangesh\Jules\GayatriPortal >> "C:\Mangesh\Jules\GayatriPortal\install.log"
 echo. >> "C:\Mangesh\Jules\GayatriPortal\install.log"
 
 echo =======================================================================
 echo          KALAKRITI ARTS STUDIO - AUTOMATED 1-CLICK INSTALLER
 echo =======================================================================
 echo.
-echo Target Base Path: C:\Mangesh\Jules\GayatriPortal
+echo Project Directory: %~dp0
+echo Storage Directory: C:\Mangesh\Jules\GayatriPortal
 echo.
+
+:: Check if package.json exists in script directory
+if not exist "%~dp0package.json" (
+    COLOR 4F
+    echo [ERROR] package.json not found in %~dp0
+    echo [%date% %time%] [ERROR] package.json not found in %~dp0 >> "C:\Mangesh\Jules\GayatriPortal\error.log"
+    echo Please make sure setup.bat is located inside the extracted GayatriPortal project folder.
+    pause
+    exit /b 1
+)
 
 echo [1/4] Checking System Prerequisites (Node.js ^& NPM)...
 echo [%date% %time%] [INFO] Checking system prerequisites... >> "C:\Mangesh\Jules\GayatriPortal\install.log"
@@ -56,7 +71,7 @@ node -v
 echo.
 
 echo [2/4] Installing NPM Dependencies...
-echo [%date% %time%] [INFO] Installing NPM dependencies... >> "C:\Mangesh\Jules\GayatriPortal\install.log"
+echo [%date% %time%] [INFO] Installing NPM dependencies in %CD%... >> "C:\Mangesh\Jules\GayatriPortal\install.log"
 call npm install >> "C:\Mangesh\Jules\GayatriPortal\install.log" 2>> "C:\Mangesh\Jules\GayatriPortal\error.log"
 if %errorlevel% neq 0 (
     COLOR 4F
